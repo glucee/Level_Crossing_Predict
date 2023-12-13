@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from pyodide.http import open_url # for PyScript
-# import urllib.request
+import urllib.request
 
 stations = [("bns", "Barnes"),   #train station name, you can find it at
             ("mtl", "Mortlake")] #https://raw.githubusercontent.com/jpsingleton/Huxley2/master/station_codes.csv
@@ -24,12 +24,16 @@ for url in URLs:
     for train in trains:
         departure_time = train["std"]
         if train["etd"] != "On time":
+            print("WARNING: Delayed Train Found!")
             departure_time = train["etd"]
         departure = datetime.strptime(departure_time, time_format)
         departure = departure.replace(current_time.year, current_time.month, current_time.day)
+        if departure.hour < current_time.hour:
+            departure = departure + timedelta(days=1)
         if departure >= current_time: # predict for the future
             time_table.append(departure)
         else:
+            print(departure.time())
             print("WARNING: There might be Delayed Train!")
 
 time_table = sorted(time_table)
