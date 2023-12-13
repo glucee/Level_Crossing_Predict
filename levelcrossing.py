@@ -1,13 +1,12 @@
 import json
 from datetime import datetime, timedelta
-# from pyodide.http import open_url # for PyScript
-import urllib.request
+from pyodide.http import open_url # for PyScript
+# import urllib.request
 
 stations = [("bns", "Barnes"),   #train station name, you can find it at
             ("mtl", "Mortlake")] #https://raw.githubusercontent.com/jpsingleton/Huxley2/master/station_codes.csv
 Access_Token = "" #You will need to add your access token
-wait_window = 2 # the window time for waiting in minutes 
-
+wait_window = 2 # the waiting time windows in minutes 
 # check the next three trains between station 0 to station 1
 URLs=[ "https://huxley2.azurewebsites.net/departures/"+stations[0][0]+"/to/"+stations[1][0]+"/3/?accessToken="+Access_Token,
 "https://huxley2.azurewebsites.net/departures/"+stations[1][0]+"/to/"+stations[0][0]+"/3/?accessToken="+Access_Token]
@@ -23,10 +22,15 @@ for url in URLs:
     # response = urllib.request.urlopen(url)
     trains = json.load(response)["trainServices"]
     for train in trains:
-        departure = datetime.strptime(train["std"], time_format)
+        departure_time = train["std"]
+        if train["etd"] != "On time":
+            departure_time = train["etd"]
+        departure = datetime.strptime(departure_time, time_format)
         departure = departure.replace(current_time.year, current_time.month, current_time.day)
-        if departure > current_time: # predict for the future
+        if departure >= current_time: # predict for the future
             time_table.append(departure)
+        else:
+            print("WARNING: There might be Delayed Train!")
 
 time_table = sorted(time_table)
 
@@ -38,7 +42,7 @@ for i in range(0, len(time_table)-1):
 window_flag.append(0)
 
 print("Current Time: " + current_time.strftime(time_format))
-print("Next Wait Periods: {} - {}".format(stations[0][1], stations[1][1]))
+print("Waiting Periods: {} - {}".format(stations[0][1], stations[1][1]))
 
 index = 0
 while (index < len(time_table)):
