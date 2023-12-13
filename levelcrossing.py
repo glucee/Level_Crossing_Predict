@@ -22,19 +22,24 @@ for url in URLs:
     # response = urllib.request.urlopen(url)
     trains = json.load(response)["trainServices"]
     for train in trains:
-        departure_time = train["std"]
+        departure_time = ""
         if train["etd"] != "On time":
-            print("WARNING: Delayed Train Found!")
-            departure_time = train["etd"]
-        departure = datetime.strptime(departure_time, time_format)
-        departure = departure.replace(current_time.year, current_time.month, current_time.day)
-        if departure.hour < current_time.hour:
-            departure = departure + timedelta(days=1)
-        if departure >= current_time: # predict for the future
-            time_table.append(departure)
+            if train["etd"] == "Delayed":
+                print("Train kept delaying, Try it later")
+            elif train["etd"] != "Cancelled":
+                departure_time = train["etd"]
         else:
-            print(departure.time())
-            print("WARNING: There might be Delayed Train!")
+            departure_time = train["std"]
+        if departure_time != "":
+            departure = datetime.strptime(departure_time, time_format)
+            departure = departure.replace(current_time.year, current_time.month, current_time.day)
+            if departure.hour < current_time.hour:
+                departure = departure + timedelta(days=1)
+            if departure >= current_time: # predict for the future
+                time_table.append(departure)
+            else:
+                print(departure.time())
+                print("WARNING: There might be Delayed Train!")
 
 time_table = sorted(time_table)
 
