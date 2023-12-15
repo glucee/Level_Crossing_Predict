@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-size: 10px;
+}
+body {
+      text-align: center;
+}
+</style>
 <head>
-    <title>Shiny Base</title>
+    <title>Level Crossing Prediction</title>
 
     <!-- Recommended meta tags -->
     <meta charset="UTF-8">
@@ -14,6 +27,16 @@
     <script type="module" src="https://pyscript.net/releases/2023.12.1/core.js"></script>
 </head>
 <body>
-    <script type="py" src="./levelcrossing.py" config="./pyscript.toml" terminal></script>
+    <h1>Predict the Waiting Time of Level Crossing in the UK 🇬🇧 </h1>
+    <p> Estimated waiting time between Barnes and Mortlake</p>
+    <button py-click="ReFetch">ReFetch</button>
+    <p></p>
+    <div id="output"></div>
+    <script type="py" src="./levelcrossing.py"></script>
+    <p></p>
 </body>
+<footer>
+    <p>The result may be not accurate!
+    <br> Developed by Bruce (glucee@hotmail.com)</p>
+</footer>
 </html>
