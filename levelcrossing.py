@@ -6,7 +6,7 @@ from pyscript import document
 
 stations = ["bns", "mtl"]  #train station name, you can find it at
             #https://raw.githubusercontent.com/jpsingleton/Huxley2/master/station_codes.csv
-Access_Token = "1619f161-95cd-4dcd-8c15-26964cbc9222"
+Access_Token = ""
 wait_window = 2 # the waiting time windows in minutes 
 
 def predict_waiting_time(stations, wait_window):
