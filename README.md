@@ -9,5 +9,9 @@ You can register to obtain one here: https://realtime.nationalrail.co.uk/OpenLDB
 3. Tune the window for the waiting time, the default value is 2 minutes.
 4. Run the script and you will find the next estamiated waiting time.
 
+# Todo
+1. Allow users to select stations
+2. Automatically get the passing time between two train stations
+
 # Credit
 https://huxley2.azurewebsites.net/
